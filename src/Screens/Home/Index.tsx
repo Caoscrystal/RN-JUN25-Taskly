@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, FlatList, TouchableOpacity, Text, Image } from 'react-native';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
 import styles from './style';
 import Button from '../../components/button';
 import CreateTaskModal from '../../components/ModalCreateTask/Index';
@@ -8,11 +8,19 @@ import TaskItem from '../../components/TaskItem';
 import Filter from '../../components/Filter';
 import FilterModal from '../../components/FilterModal';
 import Fonts from '../../Theme/fonts';
-import { useNavigation, useFocusEffect, useRoute, RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, BottomTabParamList } from '../../Navigation/types';
-import { getTasks, saveTasks } from '../../Utils/asyncStorageUtils';
-import { Task } from '../../interfaces/task';
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+  RouteProp,
+} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList, BottomTabParamList} from '../../Navigation/types';
+import {getTasks, saveTasks} from '../../Utils/asyncStorageUtils';
+import {Task} from '../../interfaces/task';
+import DefaultHeader from '../../components/DefaultHeader';
+import {API_BASE_URL} from '../../env';
+import * as Keychain from 'react-native-keychain';
 
 type PriorityType = 'lowToHigh' | 'highToLow' | null;
 type TagsType = string[];
@@ -33,6 +41,42 @@ const Home: React.FC = () => {
   const [selectedPriority, setSelectedPriority] = useState<PriorityType>(null);
   const [selectedTags, setSelectedTags] = useState<TagsType>([]);
   const [selectedDate, setSelectedDate] = useState<DateType>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadAvatar = async () => {
+      try {
+        console.log('Tentando buscar perfil do usuário...');
+        const credentials = await Keychain.getGenericPassword();
+        if (!credentials || !credentials.password) {
+          throw new Error('Token não encontrado.');
+        }
+
+        console.log('Token usado para buscar perfil:', credentials.password);
+
+        const response = await fetch(`${API_BASE_URL}/profile`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${credentials.password}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          console.log('Dados do perfil:', userData);
+          setAvatar(userData.picture); // Atualiza o avatar com o valor retornado pela API
+        } else {
+          console.error('Erro ao buscar perfil do usuário:', response.status);
+          Alert.alert('Erro', 'Não foi possível carregar o avatar do usuário.');
+        }
+      } catch (error) {
+        console.error('Erro ao carregar avatar:', error);
+        Alert.alert('Erro', 'Ocorreu um erro ao carregar o avatar.');
+      }
+    };
+
+    loadAvatar();
+  }, []);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -42,7 +86,7 @@ const Home: React.FC = () => {
           setTasks(storedTasks);
         }
       } catch (error) {
-        console.error('Erro ao carregar tarefas:', error);
+        Alert.alert('Erro', 'Não foi possível carregar as tarefas.');
       }
     };
     loadTasks();
@@ -61,7 +105,7 @@ const Home: React.FC = () => {
       try {
         await saveTasks(tasks);
       } catch (error) {
-        console.error('Erro ao salvar tarefas:', error);
+        Alert.alert('Erro', 'Não foi possível salvar as tarefas.');
       }
     };
     if (tasks.length > 0) {
@@ -75,53 +119,56 @@ const Home: React.FC = () => {
       const index = filteredTasks.findIndex(task => task.id === scrollToTaskId);
       if (index !== -1 && flatListRef.current) {
         setTimeout(() => {
-          flatListRef.current?.scrollToIndex({ index, animated: true });
+          flatListRef.current?.scrollToIndex({index, animated: true});
         }, 500);
       }
     }
   }, [route.params?.scrollToTaskId, filteredTasks]);
 
-  const handleCreateTask = useCallback(async (taskData: {
-    title: string;
-    description: string;
-    deadline: string | null | undefined;
-  }) => {
-    const newTask: Task = {
-      ...taskData,
-      id: String(Date.now()),
-      categories: [],
-      isCompleted: false,
-      priority: 0,
-      subtasks: [],
-      createdAt: Date.now(),
-    };
-    setTasks(prevTasks => [...prevTasks, newTask]);
-    setIsModalVisible(false);
-  }, []);
-
+  const handleCreateTask = useCallback(
+    async (taskData: {
+      title: string;
+      description: string;
+      deadline: string | null | undefined;
+    }) => {
+      const newTask: Task = {
+        ...taskData,
+        id: String(Date.now()),
+        categories: [],
+        isCompleted: false,
+        priority: 0,
+        subtasks: [],
+        createdAt: Date.now(),
+      };
+      setTasks(prevTasks => [...prevTasks, newTask]);
+      setIsModalVisible(false);
+    },
+    [],
+  );
 
   const handleOpenCreateTaskModal = () => setIsModalVisible(true);
   const handleCloseCreateTaskModal = () => setIsModalVisible(false);
   const handleOpenFilterModal = () => setIsFilterModalVisible(true);
   const handleCloseFilterModal = () => setIsFilterModalVisible(false);
 
-  const handlePrioritySelect = (priority: PriorityType) => setSelectedPriority(priority);
+  const handlePrioritySelect = (priority: PriorityType) =>
+    setSelectedPriority(priority);
   const handleTagSelect = (tags: TagsType) => setSelectedTags(tags);
   const handleDateSelect = (date: DateType) => setSelectedDate(date);
 
   const handleTaskDetailsNavigation = (taskItem: Task) => {
-    navigation.navigate('TaskDetails', { task: taskItem });
+    navigation.navigate('TaskDetails', {task: taskItem});
   };
 
   const handleToggleTaskComplete = (taskId: string) => {
     setTasks(prevTasks =>
       prevTasks.map(task =>
-        task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
-      )
+        task.id === taskId ? {...task, isCompleted: !task.isCompleted} : task,
+      ),
     );
   };
 
-  const renderTaskItem = ({ item }: { item: Task }) => (
+  const renderTaskItem = ({item}: {item: Task}) => (
     <TouchableOpacity onPress={() => handleTaskDetailsNavigation(item)}>
       <TaskItem
         title={item.title}
@@ -142,7 +189,7 @@ const Home: React.FC = () => {
     // Filtra por tags selecionadas
     if (selectedTags.length > 0) {
       tempTasks = tempTasks.filter(task =>
-        selectedTags.every(tag => (task.categories ?? []).includes(tag))
+        selectedTags.every(tag => (task.categories ?? []).includes(tag)),
       );
     }
 
@@ -176,7 +223,6 @@ const Home: React.FC = () => {
     setFilteredTasks(tempTasks);
   }, [tasks, selectedTags, selectedDate, selectedPriority]);
 
-
   useFocusEffect(
     useCallback(() => {
       const loadUpdatedTasks = async () => {
@@ -186,22 +232,16 @@ const Home: React.FC = () => {
             setTasks(storedTasks);
           }
         } catch (error) {
-          console.error('Erro ao recarregar tarefas:', error);
+          Alert.alert('Erro', 'Não foi possível recarregar as tarefas.');
         }
       };
       loadUpdatedTasks();
-    }, [])
+    }, []),
   );
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>TASKLY</Text>
-        <Image
-          source={require('../../Assets/Images/Avatars/avatar_1.png')}
-          style={styles.avatar}
-        />
-      </View>
+      <DefaultHeader avatarSource={avatar || undefined} />
 
       {tasks.length === 0 ? (
         <View style={styles.containerNoTask}>

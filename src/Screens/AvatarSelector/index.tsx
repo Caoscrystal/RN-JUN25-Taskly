@@ -109,11 +109,8 @@ export default function AvatarSelector() {
       return;
     }
 
-    console.log('API_BASE_URL:', API_BASE_URL);
-
     try {
       const credentials = await Keychain.getGenericPassword();
-
       if (!credentials || !credentials.password) {
         Alert.alert('Erro', 'Token não encontrado. Faça login novamente.');
         navigation.reset({
@@ -125,7 +122,24 @@ export default function AvatarSelector() {
 
       const token = credentials.password;
 
-      const cleanedPhoneNumber = route.params?.phone_number?.replace(/\D/g, '');
+      console.log('Token usado para atualizar avatar:', token);
+      console.log('Avatar selecionado:', selectedId);
+
+      // Buscar os dados do perfil do usuário
+      const profileResponse = await fetch(`${API_BASE_URL}/profile`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!profileResponse.ok) {
+        Alert.alert('Erro', 'Não foi possível carregar os dados do perfil.');
+        return;
+      }
+
+      const profileData = await profileResponse.json();
+      console.log('Dados do perfil carregados:', profileData);
 
       const response = await fetch(`${API_BASE_URL}/profile`, {
         method: 'PUT',
@@ -134,34 +148,20 @@ export default function AvatarSelector() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: route.params?.name,
-          phone_number: cleanedPhoneNumber,
+          name: profileData.name,
+          phone_number: profileData.phone_number,
           picture: selectedId,
         }),
       });
 
-      console.log('Status da resposta:', response.status);
-
-      const contentType = response.headers.get('Content-Type');
-      let responseData;
-
-      if (contentType && contentType.includes('application/json')) {
-        responseData = await response.json();
-      } else {
-        responseData = await response.text();
-      }
-
-      console.log('Resposta da API:', responseData);
+      console.log('Resposta da API:', response.status);
 
       if (response.ok) {
-        console.log('Perfil atualizado com sucesso!');
         setIsModalVisible(true);
       } else {
-        console.error('Erro ao atualizar perfil:', responseData);
-        Alert.alert(
-          'Erro',
-          responseData.error || 'Não foi possível atualizar o perfil.',
-        );
+        const errorResponse = await response.json();
+        console.error('Erro ao atualizar avatar:', errorResponse);
+        Alert.alert('Erro', 'Não foi possível atualizar o avatar.');
       }
     } catch (error) {
       console.error('Erro ao processar a requisição:', error);
