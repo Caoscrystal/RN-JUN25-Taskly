@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, Text, Image } from 'react-native';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 interface DefaultHeaderProps {
   leftComponent?: ReactNode;
@@ -17,6 +18,8 @@ const avatarMap: Record<string, any> = {
 
 const DefaultHeader: React.FC<DefaultHeaderProps> = ({ leftComponent, avatarSource }) => {
   const avatarImage = avatarSource ? avatarMap[avatarSource] : avatarMap['avatar_1'];
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <View style={styles.header}>

@@ -12,6 +12,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
   containerEdit:{
     justifyContent: 'center',
     gap: 16,
+    backgroundColor: theme.background,
   },
   taskDetailsContainer: {
     backgroundColor: theme.Habilitarbutton,
@@ -31,6 +32,11 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     ...Fonts.Roboto60020,
     color: theme.text,
     marginBottom: 4,
+  },
+  notag: {
+    ...Fonts.Roboto40016,
+    color: theme.text,
+    fontSize: 13,
   },
   titleTag: {
     ...Fonts.Roboto50018,
@@ -107,10 +113,11 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
   },
   scrollViewContent: {
     paddingBottom: 20,
+    
   },
   bottomSpace: {
     height: 50,
@@ -120,11 +127,13 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     alignSelf: 'flex-end',
     width: 24,
     height: 24,
+    
   },
   editButtonsContainer: {
     width: '100%',
     flexDirection: 'row',
     gap: 20,
+    
   },
   cancelButton: {
     backgroundColor: 'transparent',
@@ -192,7 +201,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     textTransform: 'uppercase',
   },
   priorityTextActive:{
-    color: '#FFFFFf',
+    color: '#FFFFFF',
   },
   zeroedBottomInput:{
     marginBottom: 0,

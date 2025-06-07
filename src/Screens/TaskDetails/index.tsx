@@ -272,6 +272,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
 
     return (
         <KeyboardAvoidingView
+            style={styles.keyboardAvoidingView}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
         >
@@ -308,7 +309,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
                                                 <CategoryTag key={index} item={tag} />
                                             ))
                                         ) : (
-                                            <Text>No tags available</Text> // Caso não haja categorias
+                                            <Text style={styles.notag}>No tags available</Text>
                                         )}
                                     </View>
                                 </View>

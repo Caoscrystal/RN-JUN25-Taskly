@@ -19,11 +19,12 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         borderRadius: 10,
       },
       backText: {
-        color: theme.text,
+        color: theme.text2,
         ...Fonts.Roboto50018,
       },
       editText: {
         ...Fonts.Roboto40016,
+        color: theme.text,
       },
 });
 
