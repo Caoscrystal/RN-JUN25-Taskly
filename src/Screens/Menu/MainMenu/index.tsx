@@ -10,7 +10,7 @@ import {
 import {CarouselActionList} from '../../../components/carouselActionList/index';
 import Modal from '../../AvatarSelector/Modal';
 import {API_BASE_URL} from '../../../env';
-// import * as Keychain from 'react-native-keychain';
+
 import {
   getToken,
   removeToken,

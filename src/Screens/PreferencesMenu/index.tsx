@@ -16,6 +16,7 @@ export default function PreferencesMenu() {
     const styles = getStyles(theme);
     return(
         <View style={styles.container}>
+            
             <View style={styles.header}>
                 <BackButton
                 onPress={() => navigation.goBack()}

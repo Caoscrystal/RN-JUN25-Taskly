@@ -25,7 +25,6 @@ const App: React.FC = () => {
             await Keychain.setGenericPassword(refreshToken, newToken);
             console.log('Token renovado com sucesso!');
           } catch (error) {
-            console.error('Erro ao renovar o token:', error);
             await removeToken();
           }
         } else {
