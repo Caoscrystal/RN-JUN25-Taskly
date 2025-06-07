@@ -13,12 +13,13 @@ import Button from '../../components/button';
 import Input from '../../components/input';
 import BiometryModal from './BiometryResgister';
 import {registerUser} from '../../hooks/useApi';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import * as Keychain from 'react-native-keychain';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../Navigation/types';
-import {} from '../../Utils/authUtils'
+import {} from '../../Utils/authUtils';
 
 export const storeToken = async (idToken: string, refreshToken?: string) => {
   try {
@@ -48,6 +49,8 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [showBiometryModal, setShowBiometryModal] = useState(false);
   const [biometryApiLoading, setBiometryApiLoading] = useState(false);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
 
   const validateName = (value: string): string | null => {
@@ -211,7 +214,7 @@ export default function Register() {
             value={email}
             onChangeText={text => {
               setEmail(text);
-              if (emailError) validateEmail(text);
+              if (emailError) {validateEmail(text);}
             }}
             onBlur={() => {
               const error = validateEmail(email);
@@ -243,7 +246,7 @@ export default function Register() {
             value={password}
             onChangeText={text => {
               setPassword(text);
-              if (passwordError) validatePassword(text);
+              if (passwordError) {validatePassword(text);}
             }}
             onBlur={() => {
               const error = validatePassword(password);
@@ -258,7 +261,7 @@ export default function Register() {
             value={confirmPassword}
             onChangeText={text => {
               setConfirmPassword(text);
-              if (confirmPasswordError) validateConfirmPassword(text);
+              if (confirmPasswordError) {validateConfirmPassword(text);}
             }}
             onBlur={() => {
               const error = validateConfirmPassword(confirmPassword);

@@ -231,7 +231,12 @@ const Login: React.FC = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.form}>
         <Image
-          source={require('../../Assets/Images/Logo.png')}
+          source={
+            theme.background === '#282828'
+              ? require('../../Assets/Images/Logo_dark.png')
+              : require('../../Assets/Images/Logo.png')
+          }
+
           style={styles.logo}
         />
         <Input
