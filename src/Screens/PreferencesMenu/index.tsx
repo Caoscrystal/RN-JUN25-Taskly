@@ -12,6 +12,7 @@ export default function PreferencesMenu() {
     const [modalVisible, setModalVisible] = useState(false)
     return(
         <View style={styles.container}>
+            
             <View style={styles.header}>
                 <BackButton
                 onPress={() => navigation.goBack()}
