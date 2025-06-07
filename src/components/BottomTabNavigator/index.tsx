@@ -1,11 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import Home from '../../Screens/Home/Index';
 import Notifications from '../../Screens/Notifications';
 import Menu from '../../Screens/Menu/MainMenu/index';
 import TabIcon from './TabIcon';
-import bottomTabNavigatorStyles from './style';
 
 import { ImageSourcePropType, Pressable } from 'react-native';
 
@@ -28,10 +28,12 @@ const createIcon = (iconSource: ImageSourcePropType) => {
 };
 
 export default function BottomTabNavigator() {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <Tab.Navigator
       screenOptions={{
-        ...bottomTabNavigatorStyles,
+        ...styles,
         tabBarButton: TabBarButton,
         headerShown: false,
       }}

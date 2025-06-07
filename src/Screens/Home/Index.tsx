@@ -1,6 +1,7 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
-import styles from './style';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, FlatList, TouchableOpacity, Alert } from 'react-native';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import Button from '../../components/button';
 import CreateTaskModal from '../../components/ModalCreateTask/Index';
 import EmptyState from '../../components/EmptyState';
@@ -238,6 +239,8 @@ const Home: React.FC = () => {
       loadUpdatedTasks();
     }, []),
   );
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <View style={styles.container}>
@@ -265,8 +268,8 @@ const Home: React.FC = () => {
         fontFamily={Fonts.Roboto60020.fontFamily}
         fontWeight={600}
         fontSize={Fonts.Roboto60020.fontSize}
-        backgroundColor="#5B3CC4"
-        textColor="#FFFFFF"
+        backgroundColor={theme.FilterButton}
+        textColor={theme.background}
         onPress={handleOpenCreateTaskModal}
         width={329}
       />

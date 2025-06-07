@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {CarouselActionList} from '../../../components/carouselActionList/index';
 import Modal from '../../AvatarSelector/Modal';
-import styles from './style';
 import {API_BASE_URL} from '../../../env';
 
 import {
@@ -17,6 +16,8 @@ import {
   removeToken,
   refreshAuthToken,
 } from '../../../Utils/authUtils';
+import getStyles from './style';
+import { useTheme } from '../../../Theme/ThemeContext';
 
 const avatarMap: Record<string, any> = {
   avatar_1: require('../../../Assets/Images/Avatars/avatar_1.png'),
@@ -33,6 +34,8 @@ type Props = {
 };
 
 const MenuPrincipal = ({navigation, route}: Props) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [hasShownModal, setHasShownModal] = useState(false);
   const [userData, setUserData] = useState({

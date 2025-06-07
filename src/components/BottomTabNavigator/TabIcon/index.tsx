@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import styles  from "./style";
+import getStyles from './style';
+import { useTheme } from '../../../Theme/ThemeContext';
 
 interface TabIconProps {
   focused: boolean;
   color: string;
-  iconSource: string | ReturnType<typeof require>; 
+  iconSource: string | ReturnType<typeof require>;
 }
 
 const TabIcon: React.FC<TabIconProps> = ({ focused, color, iconSource }) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <View style={styles.iconContainer}>
       {focused && <View style={styles.activeCircle} />}

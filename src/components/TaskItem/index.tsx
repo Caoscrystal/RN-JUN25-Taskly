@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import { Text, View, TouchableOpacity, FlatList, Animated } from 'react-native';
-import { styles } from './style';
+import { useTheme } from '../../Theme/ThemeContext';
+import getStyles from './style';
 import AnimatedCheck from '../AnimatedCheck';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../Navigation/types';
@@ -53,6 +54,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ title, description, categories, isC
   const keyExtractorCategory = useCallback((item: string, index: number) => index.toString(), []);
 
   console.log('TaskItem rendered:', title, isCompleted);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <View style={styles.itemArea}>

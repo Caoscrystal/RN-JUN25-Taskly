@@ -15,7 +15,8 @@ import {
   setBiometryEnabled,
   isBiometryEnabled,
 } from '../../Utils/authUtils';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import Fonts from '../../Theme/fonts';
@@ -223,6 +224,8 @@ const Login: React.FC = () => {
   const handleCreateAccount = () => {
     navigation.navigate('Register');
   };
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -258,8 +261,8 @@ const Login: React.FC = () => {
         fontFamily={Fonts.Roboto60020.fontFamily}
         fontWeight={600}
         fontSize={Fonts.Roboto60020.fontSize}
-        textColor="#FFFFFF"
-        backgroundColor="#5B3CC4"
+        textColor={theme.background}
+        backgroundColor={theme.FilterButton}
         width="100%"
         style={styles.buttonEnter}
         onPress={handleLogin}
@@ -277,9 +280,9 @@ const Login: React.FC = () => {
         fontFamily={Fonts.Roboto60020.fontFamily}
         fontWeight={600}
         fontSize={Fonts.Roboto60020.fontSize}
-        textColor="#5B3CC4"
+        textColor={theme.Inputborder}
         borderWidth={2}
-        borderColor="#5B3CC4"
+        borderColor={theme.Inputborder}
         backgroundColor="transparent"
         width="100%"
         style={styles.buttonCreate}

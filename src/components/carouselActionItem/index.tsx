@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, ImageSourcePropType, Image } from 'react-native';
-import style from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 type Props = {
     title: string;
@@ -8,10 +9,12 @@ type Props = {
   };
 
   export function CarouselActionItem({ title, icon, onPress }: Props) {
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
     return (
-      <TouchableOpacity style={style.container} onPress={onPress} >
-        <Text style={style.title}>{title}</Text>
-        <Image source={icon} style={style.icon} />
+      <TouchableOpacity style={styles.container} onPress={onPress} >
+        <Text style={styles.title}>{title}</Text>
+        <Image source={icon} style={styles.icon} />
       </TouchableOpacity>
     );
  }

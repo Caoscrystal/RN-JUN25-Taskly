@@ -16,9 +16,11 @@ import Button from '../../components/button';
 import ProfileHeader from '../../components/ProfileHeader';
 import ProgressBar from '../../components/ProgressBar';
 import Modal from './Modal';
-import styles from './style';
 import {API_BASE_URL} from '../../env';
 import * as Keychain from 'react-native-keychain';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
+
 
 import avatar1 from '../../Assets/Images/Avatars/avatar_1.png';
 import avatar2 from '../../Assets/Images/Avatars/avatar_2.png';
@@ -39,6 +41,8 @@ const AVATAR_MARGIN = 12;
 const GRAY_BORDER = '#D1D5DB';
 
 export default function AvatarSelector() {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'AvatarSelector'>>();
@@ -170,7 +174,7 @@ export default function AvatarSelector() {
   };
 
   const handleModalClose = () => {
-    if (!isModalVisible) return;
+    if (!isModalVisible) {return;}
 
     setIsModalVisible(false);
 
@@ -259,7 +263,7 @@ export default function AvatarSelector() {
       <Button
         title={isEditing ? 'CONFIRMAR EDIÇÃO' : 'CONFIRMAR SELEÇÃO'}
         fontFamily="Roboto60020"
-        backgroundColor="#6C4AE4"
+        backgroundColor={theme.FilterButton}
         width={Dimensions.get('window').width * 0.9}
         style={styles.confirmButton}
         onPress={isEditing ? handleConfirmEdicao : handleConfirmCadastro}

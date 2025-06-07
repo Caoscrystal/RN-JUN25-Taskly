@@ -1,15 +1,18 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
     area: {
         flex: 1,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        display: 'flex',
     },
     areaText: {
-        color: '#FFFFFF',
-        fontSize: 20
-    }
-})
-export default  styles;
+        color: theme.text,
+        fontSize: 20,
+    },
+});
+export default  getStyles;

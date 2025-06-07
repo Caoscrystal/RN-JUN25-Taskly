@@ -1,16 +1,19 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
+
   container: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   textNoTask: {
-    color: '#AAAAAA',
+    color: theme.text,
     ...Fonts.Roboto40016,
     marginBottom: 32,
   },
 });
 
-export default styles;
+export default getStyles;
+

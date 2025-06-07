@@ -1,13 +1,14 @@
 import {StyleSheet} from 'react-native';
-import Fonts from '../../Theme/fonts'
+import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-export const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   subtaskArea: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 16,
-    marginBottom: 32
+    marginBottom: 32,
   },
   subtaskAreaText: {
     flexDirection: 'row',
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   subtaskText: {
     ...Fonts.Roboto40016,
-    color: '#000000',
+    color: theme.text,
     flexShrink: 1,
   },
   subtaskTextCompleted: {
@@ -40,7 +41,9 @@ export const styles = StyleSheet.create({
       top: 13,
   },
   inputEditArea: {
-    width: '100%'
+    width: '100%',
   },
-  
+
 });
+export default getStyles;
+

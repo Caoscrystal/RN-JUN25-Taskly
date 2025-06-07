@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -7,11 +7,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import styles from './style';
 import Input from '../input';
 import DateInput from '../DateInput';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 interface CreateTaskModalProps {
   visible: boolean;
@@ -99,6 +100,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   };
 
   const formattedDate = deadlineDate ? format(deadlineDate, 'dd/MM/yyyy', { locale: ptBR }) : '';
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <Modal

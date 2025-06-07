@@ -1,7 +1,10 @@
 import { TouchableOpacity, Text, Image } from "react-native";
-import styles from "./style";
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 export default function ({ onPress }: { onPress?: () => void }) {
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
     return(
         <TouchableOpacity style={styles.card} onPress={onPress}>
             <Text style={styles.text}>Habilitar tema claro</Text>

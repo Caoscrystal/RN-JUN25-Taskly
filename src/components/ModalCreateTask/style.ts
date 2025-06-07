@@ -1,21 +1,24 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(17, 24, 39, 0.7)', 
+    backgroundColor: 'rgba(17, 24, 39, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     borderRadius: 12,
     padding: 24,
   },
   modalTitle: {
     ...Fonts.Roboto50018,
     textAlign: 'left',
+    color: theme.text,
   },
 
   modalButtons: {
@@ -25,14 +28,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   cancelButton: {
-    backgroundColor: '#fff',
+    backgroundColor: theme.background,
     borderRadius: 8,
-    borderWidth: 2,   
-    borderColor: '#5B3CC4', 
+    borderWidth: 2,
+    borderColor: '#5B3CC4',
     width: 134.5,
     height: 37,
     alignItems: 'center',
-    justifyContent:'center'
+    justifyContent:'center',
   },
   cancelText: {
     color: '#5B3CC4',
@@ -40,15 +43,15 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   createButton: {
-    backgroundColor: '#5B3CC4',
+    backgroundColor: theme.FilterButton,
     borderRadius: 8,
     width: 134.5,
     height: 37,
     alignItems: 'center',
-    justifyContent:'center'
+    justifyContent:'center',
   },
   createText: {
-    color: '#fff',
+    color: theme.background,
     ...Fonts.Roboto50018,
     textTransform: 'uppercase',
   },
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
   },
   textinputArea:{
     marginBottom: 35,
-  }
+  },
 });
 
-export default styles;
+export default getStyles;

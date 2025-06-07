@@ -8,7 +8,8 @@ import {
   ViewStyle,
   DimensionValue,
 } from 'react-native';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -40,7 +41,6 @@ export default function Input({
   height,
   fontFamily,
   fontWeight = 'normal',
-  textColor = '#000000',
   mask = 'none',
   validateEmail = false,
   editable = true,
@@ -48,6 +48,8 @@ export default function Input({
 }: InputProps) {
   const [internalValue, setInternalValue] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   const formatPhone = (text: string) => {
     const cleaned = text.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
@@ -89,8 +91,8 @@ export default function Input({
             height,
             fontFamily,
             fontWeight,
-            color: textColor,
-            backgroundColor: editable ? '#FFFFFF' : '#F0F0F0',
+            color: theme.text,
+            backgroundColor: editable ? theme.background : theme.background,
           },
         ]}
         keyboardType={
