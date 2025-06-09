@@ -21,14 +21,6 @@ import * as Keychain from 'react-native-keychain';
 import getStyles from './style';
 import { useTheme } from '../../Theme/ThemeContext';
 
-
-/*import avatar1 from '../../Assets/Images/Avatars/avatar_1.png';
-import avatar2 from '../../Assets/Images/Avatars/avatar_2.png';
-import avatar3 from '../../Assets/Images/Avatars/avatar_3.png';
-import avatar4 from '../../Assets/Images/Avatars/avatar_4.png';
-import avatar5 from '../../Assets/Images/Avatars/avatar_5.png';
-*/
-
 const AVATARS = [
 
   {

@@ -71,7 +71,7 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleEditPress(item.id, item.text)}>
-                <Image source={require('../../Assets/icons/Pencil.png')} />
+                <Image source={require('../../Assets/icons/GoldPencil.png')} />
               </TouchableOpacity>
             </View>
           )}

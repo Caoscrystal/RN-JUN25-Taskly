@@ -43,17 +43,16 @@ const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<TagsType>([]);
   const [selectedDate, setSelectedDate] = useState<DateType>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [tasksLoaded, setTasksLoaded] = useState(false);
 
-  useEffect(() => {
-    const loadAvatar = async () => {
+ useEffect(() => {
+    const loadAvatarAndUserId = async () => {
       try {
-        console.log('Tentando buscar perfil do usuário...');
         const credentials = await Keychain.getGenericPassword();
         if (!credentials || !credentials.password) {
           throw new Error('Token não encontrado.');
         }
-
-        console.log('Token usado para buscar perfil:', credentials.password);
 
         const response = await fetch(`${API_BASE_URL}/profile`, {
           method: 'GET',
@@ -64,34 +63,49 @@ const Home: React.FC = () => {
 
         if (response.ok) {
           const userData = await response.json();
-          console.log('Dados do perfil:', userData);
-          setAvatar(userData.picture); // Atualiza o avatar com o valor retornado pela API
+          setAvatar(userData.picture);
+          setUserId(userData.email); // Use sempre o mesmo campo!
+          console.log('userId carregado:', userData.email);
         } else {
-          console.error('Erro ao buscar perfil do usuário:', response.status);
           Alert.alert('Erro', 'Não foi possível carregar o avatar do usuário.');
         }
       } catch (error) {
-        console.error('Erro ao carregar avatar:', error);
         Alert.alert('Erro', 'Ocorreu um erro ao carregar o avatar.');
       }
     };
 
-    loadAvatar();
+    loadAvatarAndUserId();
   }, []);
 
+
   useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const storedTasks = await getTasks();
-        if (storedTasks && storedTasks.length > 0) {
-          setTasks(storedTasks);
-        }
-      } catch (error) {
-        Alert.alert('Erro', 'Não foi possível carregar as tarefas.');
-      }
-    };
-    loadTasks();
-  }, []);
+  if (!userId) return;
+  console.log('Carregando tarefas para userId:', userId);
+  const loadTasks = async () => {
+    try {
+      const storedTasks = await getTasks(userId);
+      setTasks(storedTasks ?? []);
+      setTasksLoaded(true); // <-- Só depois de carregar
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível carregar as tarefas.');
+    }
+  };
+  loadTasks();
+}, [userId]);
+
+
+  useEffect(() => {
+  if (!userId || !tasksLoaded) return; // <-- Só salva depois de carregar
+  console.log('Salvando tarefas para userId:', userId);
+  const saveTasksToStorage = async () => {
+    try {
+      await saveTasks(userId, tasks);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível salvar as tarefas.');
+    }
+  };
+  saveTasksToStorage();
+}, [tasks, userId, tasksLoaded]);
 
   useEffect(() => {
     const uniqueTags = new Set<string>();
@@ -99,19 +113,6 @@ const Home: React.FC = () => {
       (task.categories ?? []).forEach(tag => uniqueTags.add(tag));
     });
     setAllTags(Array.from(uniqueTags));
-  }, [tasks]);
-
-  useEffect(() => {
-    const saveTasksToStorage = async () => {
-      try {
-        await saveTasks(tasks);
-      } catch (error) {
-        Alert.alert('Erro', 'Não foi possível salvar as tarefas.');
-      }
-    };
-    if (tasks.length > 0) {
-      saveTasksToStorage();
-    }
   }, [tasks]);
 
   useEffect(() => {
@@ -225,20 +226,22 @@ const Home: React.FC = () => {
   }, [tasks, selectedTags, selectedDate, selectedPriority]);
 
   useFocusEffect(
-    useCallback(() => {
-      const loadUpdatedTasks = async () => {
-        try {
-          const storedTasks = await getTasks();
-          if (storedTasks) {
-            setTasks(storedTasks);
-          }
-        } catch (error) {
-          Alert.alert('Erro', 'Não foi possível recarregar as tarefas.');
+  useCallback(() => {
+    if (!userId) return; // <-- Adicione esta linha!
+    const loadUpdatedTasks = async () => {
+      try {
+        const storedTasks = await getTasks(userId);
+        if (storedTasks) {
+          setTasks(storedTasks);
         }
-      };
-      loadUpdatedTasks();
-    }, []),
-  );
+      } catch (error) {
+        Alert.alert('Erro', 'Não foi possível recarregar as tarefas.');
+      }
+    };
+    loadUpdatedTasks();
+  }, [userId]),
+);
+
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
