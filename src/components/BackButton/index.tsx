@@ -1,6 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View, Image } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View} from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { useTheme } from '../../Theme/ThemeContext';
+import { ThemeType } from '../../Theme/theme';
+
 
 interface BackButtonProps {
   onPress: () => void;
@@ -8,16 +11,16 @@ interface BackButtonProps {
 }
 
 const BackButton: React.FC<BackButtonProps> = ({ onPress, rightText }) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
+  
   return (
     <View style={styles.container}>
       {/* Botão VOLTAR */}
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <View style={styles.iconContainer}>
-          <Image
-            source={require('../../Assets/icons/VectorBack.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.textButton}>VOLTAR</Text>
+          <Text style={styles.textButton}> {'<'} VOLTAR</Text>
         </View>
       </TouchableOpacity>
 
@@ -27,7 +30,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onPress, rightText }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   container: {
     width: 329,
     flexDirection: 'row',
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#AAAAAA',
+    backgroundColor: theme.backButton,
     width: 113,
     height: 48,
     borderRadius: 12,
@@ -48,19 +51,15 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  icon: {
-    width: 16,
-    height: 16,
-    resizeMode: 'contain',
-    marginRight: 8,
+    display: 'flex',
+    justifyContent: 'center'
   },
   textButton: {
-    color: '#F4F4F4',
+    color: theme.background,
     ...Fonts.Roboto50018,
   },
   textRight: {
-    color: '#000000',
+    color: theme.text,
     ...Fonts.Roboto40016,
   },
 });

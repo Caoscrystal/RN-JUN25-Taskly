@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    backgroundColor: '#FFF',
+    backgroundColor: theme.background,
   },
   title: {
     fontSize: 20,
@@ -19,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default getStyles;

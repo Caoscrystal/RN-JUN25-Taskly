@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
 const AVATAR_SIZE = 90;
 const AVATAR_MARGIN = 12;
 
-export default StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   headerContainer: {
     width: '100%',
     paddingHorizontal: 20,
@@ -12,7 +13,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 25,
@@ -22,13 +23,13 @@ export default StyleSheet.create({
     marginBottom: 24,
   },
   textAvatar: {
-    color: '#000000',
+    color: theme.text,
     marginBottom: 4,
     textAlign: 'center',
     ...Fonts.Roboto70024,
   },
   textPick: {
-    color: '#000000',
+    color: theme.text,
     marginBottom: 12,
     textAlign: 'center',
     ...Fonts.Roboto40016,
@@ -53,3 +54,5 @@ export default StyleSheet.create({
     height: 48,
   },
 });
+
+export default getStyles;

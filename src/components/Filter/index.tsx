@@ -9,7 +9,7 @@ interface FilterProps {
 export default function Filter({ onPress }: FilterProps) {
   return (
     <View style={styles.filterContainer}>
-      <TouchableOpacity onPress={onPress}> 
+      <TouchableOpacity onPress={onPress}>
         <Image
           style={styles.filterIcon}
           source={require('../../Assets/icons/FilterIcon.png')}

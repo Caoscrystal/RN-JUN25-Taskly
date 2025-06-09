@@ -7,7 +7,8 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../../Navigation/types';
 import ProfileHeader from '../../components/ProfileHeader';
 import ProgressBar from '../../components/ProgressBar';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import {API_BASE_URL} from '../../env';
 import * as Keychain from 'react-native-keychain';
 
@@ -23,6 +24,8 @@ function EditPersonalInfoScreen() {
   const [phone, setPhone] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [email, setEmail] = useState('');
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   const fetchUserProfile = useCallback(async () => {
     try {

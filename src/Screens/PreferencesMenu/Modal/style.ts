@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../../Theme/fonts';
+import { ThemeType } from '../../../Theme/theme';
+
 
 const CARD_SIZE = 140;
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -11,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
     borderRadius: 16,
     padding: 18,
     alignItems: 'center',
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 8,
     textDecorationLine: 'underline',
+    color: theme.text,
   },
   row: {
     flexDirection: 'row',
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_SIZE,
     height: CARD_SIZE,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.Habilitarbutton,
     borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
   },
   selectedCard: {
     borderColor: '#7B4AE4',
-    backgroundColor: '#fff',
   },
   icon: {
     width: 80,
@@ -57,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default getStyles;

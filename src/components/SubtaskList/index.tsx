@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import AnimatedCheck from '../AnimatedCheck';
-import { styles } from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import Input from '../input';
 import { ImageSourcePropType } from 'react-native';
 
@@ -42,6 +43,9 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
     }
   }, [editText, onEditSubtask]);
 
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
   return (
     <View>
       {subtasks.map((item) => (
@@ -67,7 +71,7 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleEditPress(item.id, item.text)}>
-                <Image source={require('../../Assets/icons/Pencil.png')} />
+                <Image source={require('../../Assets/icons/GoldPencil.png')} />
               </TouchableOpacity>
             </View>
           )}

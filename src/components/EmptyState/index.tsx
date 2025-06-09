@@ -1,8 +1,11 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 const EmptyState: React.FC = () => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <View style={styles.container}>
       <Image

@@ -1,14 +1,17 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
       padding: 30,
-      backgroundColor: '#F4F4F4',
+      backgroundColor: theme.background,
       alignItems: 'center',
+      flexGrow: 1,
     },
     form: {
       flex: 1,
+      
     },
     backButton: {
       flexDirection: 'row',
@@ -21,7 +24,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
     },
     backText: {
-      color: '#fff',
+      color: theme.text2,
       ...Fonts.Roboto50018,
     },
     inputSpacing: {
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       alignSelf: 'center',
       marginVertical: 20,
-      color: '#222',
+      color: theme.text,
     },
 
     createButton: {
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
       height:47,
       marginTop:8,
     },
-    
+
   });
 
-export default styles;
+export default getStyles;

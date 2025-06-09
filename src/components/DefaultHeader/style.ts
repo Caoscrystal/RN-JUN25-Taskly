@@ -1,7 +1,8 @@
 import {StyleSheet} from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...Fonts.Roboto70024,
-    color: '#000000',
+    color: theme.text,
   },
   avatar: {
     width: 50,
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default getStyles;

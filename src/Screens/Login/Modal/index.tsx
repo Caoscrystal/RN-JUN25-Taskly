@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal, View, Text } from 'react-native';
 import Button from '../../../components/button';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../../Theme/ThemeContext';
 
 interface LoginErrorModalProps {
   visible: boolean;
@@ -16,6 +17,8 @@ const LoginErrorModal: React.FC<LoginErrorModalProps> = ({
   description,
   onClose,
 }) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <Modal
       transparent
@@ -28,11 +31,11 @@ const LoginErrorModal: React.FC<LoginErrorModalProps> = ({
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
           <Button
-          title='FECHAR'
-          fontFamily='Roboto50018'
-          backgroundColor='#F4F4F4'
-          textColor='#5B3CC4'
-          borderColor='#5B3CC4'
+          title="FECHAR"
+          fontFamily="Roboto50018"
+          backgroundColor={theme.background}
+          textColor={theme.FilterButton}
+          borderColor={theme.FilterButton}
           borderWidth={2}
           height={40}
           onPress={onClose}

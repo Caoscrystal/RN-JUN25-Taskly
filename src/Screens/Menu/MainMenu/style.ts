@@ -1,12 +1,11 @@
-//Estilos do Menu Principal
-
+import { ThemeType } from '../../../Theme/theme';
 import { StyleSheet } from 'react-native';
 import Fonts from '../../../Theme/fonts';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
     paddingHorizontal: 32,
   },
 
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
 
   profileText: {
     ...Fonts.Roboto40016,
-    color: '#1E1E1E',
+    color: theme.text,
   },
 
   profileNome:{
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
+    backgroundColor: theme.Habilitarbutton,
     padding: 24,
     width:329,
     height:72,
@@ -65,17 +64,17 @@ const styles = StyleSheet.create({
 
   buttonText: {
     ...Fonts.Roboto50018,
-    color: '#000',
+    color: theme.text,
   },
 
   icon: {
     width: 9.75,
     height: 17.25,
     resizeMode: 'contain',
-    tintColor:'#000',
+    tintColor: theme.text,
     transform: [{ rotate: '180deg' }],
     marginRight:3.37,
   },
 });
 
-export default styles;
+export default getStyles;

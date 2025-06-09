@@ -1,19 +1,21 @@
 import {StyleSheet} from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 32,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
     marginBottom: 20,
   },
   containerEdit:{
     justifyContent: 'center',
     gap: 16,
+    backgroundColor: theme.background,
   },
   taskDetailsContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.Habilitarbutton,
     padding: 24,
     gap: 16,
     borderRadius: 12,
@@ -28,16 +30,21 @@ const styles = StyleSheet.create({
   },
   title: {
     ...Fonts.Roboto60020,
-    color: '#AAAAAA',
+    color: theme.text,
     marginBottom: 4,
+  },
+  notag: {
+    ...Fonts.Roboto40016,
+    color: theme.text,
+    fontSize: 13,
   },
   titleTag: {
     ...Fonts.Roboto50018,
-    color: '#1E1E1E',
+    color: theme.text,
   },
   description: {
     ...Fonts.Roboto40016,
-    color: '#1E1E1E',
+    color: theme.text,
   },
   priority: {
     ...Fonts.Roboto40016,
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   addButton: {
-    backgroundColor: '#5B3CC4',
+    backgroundColor: theme.Inputborder,
     paddingVertical: 4,
     borderRadius: 8,
     alignItems: 'center',
@@ -106,10 +113,11 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
   },
   scrollViewContent: {
     paddingBottom: 20,
+    
   },
   bottomSpace: {
     height: 50,
@@ -119,11 +127,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     width: 24,
     height: 24,
+    
   },
   editButtonsContainer: {
     width: '100%',
     flexDirection: 'row',
     gap: 20,
+    
   },
   cancelButton: {
     backgroundColor: 'transparent',
@@ -148,7 +158,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf:'flex-end',
     marginTop: 12,
-    marginRight: 16
+    marginRight: 16,
   },
   tagItem: {
     flexDirection: 'row',
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 4,
     gap: 4,
-    marginRight: 4
+    marginRight: 4,
   },
   tagText: {
     ...Fonts.Roboto40016,
@@ -191,7 +201,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   priorityTextActive:{
-    color: '#FFFFFf',
+    color: '#FFFFFF',
   },
   zeroedBottomInput:{
     marginBottom: 0,
@@ -208,4 +218,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default styles;
+export default getStyles;

@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import Fonts from '../../Theme/fonts';
+import { ThemeType } from '../../Theme/theme';
 
-const styles = StyleSheet.create({
+
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   modalContent: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: theme.background,
     padding: 24,
     borderRadius: 8,
     minHeight: 382,
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     ...Fonts.Roboto70024,
+    color: theme.text,
   },
   modalHeader:{
     flexDirection: 'row',
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   },
   accordionTitle: {
     ...Fonts.Roboto50018,
-    color: '#1E1E1E',
+    color: theme.text,
   },
   accordionArea: {
     marginBottom: 32,
@@ -90,8 +93,12 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
   },
   tagsScrollView: {
-    maxHeight: 105
+    maxHeight: 105,
+  },
+  Button: {
+    backgroundColor: theme.FilterButton,
+    color: theme.text2,
   }
 });
 
-export default styles
+export default getStyles;

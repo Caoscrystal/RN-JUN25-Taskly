@@ -15,7 +15,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onToggleComplete }) => {
     return (
       <TaskItem
         title={item.title}
-        description={item.description}
+        description={item.description ?? ''}
         categories={item.categories || []}
         isCompleted={item.isCompleted}
         onToggleComplete={() => onToggleComplete(item.id)} // Chama a função recebida

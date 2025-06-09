@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import styles from './style';
 import Button from '../button';
 import Fonts from '../../Theme/fonts';
 import Collapsible from 'react-native-collapsible';
 import AnimatedCheck from '../AnimatedCheck';
 import DateInput from '../DateInput';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 interface FilterModalProps {
   visible: boolean;
@@ -86,7 +87,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
     onDateSelect(null);
     onClose();
   };
-
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <Modal
       visible={visible}
@@ -209,8 +211,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
           <View style={styles.buttonsContainer}>
             <Button
               title="APLICAR"
-              backgroundColor="#5B3CC4"
-              textColor="#FFFFFF"
+              backgroundColor={styles.Button.backgroundColor}
+              textColor={styles.Button.color}
               fontFamily={Fonts.Roboto50018.fontFamily}
               fontWeight={500}
               fontSize={Fonts.Roboto50018.fontSize}
@@ -220,8 +222,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
             />
             <Button
               title="LIMPAR FILTRO"
-              backgroundColor="#5B3CC4"
-              textColor="#FFFFFF"
+              backgroundColor={styles.Button.backgroundColor}
+              textColor={styles.Button.color}
               fontFamily={Fonts.Roboto50018.fontFamily}
               fontWeight={500}
               fontSize={Fonts.Roboto50018.fontSize}

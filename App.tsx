@@ -3,9 +3,11 @@ import { Alert, ActivityIndicator, View } from 'react-native';
 import Keychain from 'react-native-keychain';
 import AppNavigator from './src/Navigation/index';
 import { isTokenExpired, refreshAuthToken, removeToken } from './src/Utils/authUtils';
+import { ThemeProvider } from './src/Theme/ThemeContext'; // Importa o provedor de tema
+
 
 const App: React.FC = () => {
-  const [isAuthenticated, ] = useState(false);
+  const [isAuthenticated ] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +25,6 @@ const App: React.FC = () => {
             await Keychain.setGenericPassword(refreshToken, newToken);
             console.log('Token renovado com sucesso!');
           } catch (error) {
-            console.error('Erro ao renovar o token:', error);
             await removeToken();
           }
         } else {
@@ -51,7 +52,12 @@ const App: React.FC = () => {
     );
   }
 
-  return <AppNavigator isAuthenticated={isAuthenticated} />;
+  return (
+
+    <ThemeProvider>
+      <AppNavigator isAuthenticated={isAuthenticated} />
+    </ThemeProvider>
+  );
 };
 
 export default App;

@@ -7,10 +7,12 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Platform,
+    Alert,
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../Navigation/types';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 import DefaultHeader from '../../components/DefaultHeader';
 import CategoryTag from '../../components/CategoryTag';
 import SmallBackButton from '../../components/SmallBackButton';
@@ -27,6 +29,8 @@ import XCircle from '../../Assets/icons/XCircle.png';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { isValid } from 'date-fns';
+import { API_BASE_URL } from '../../env';
+import * as keychain from 'react-native-keychain'
 
 type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
 
@@ -53,6 +57,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
     const route = useRoute<TaskDetailsRouteProp>();
     const { task: initialTask } = route.params;
     const [task, setTask] = useState<Task>(initialTask);
+    const [avatar, setAvatar] = useState<string | null>(null);
     const [newTag, setNewTag] = useState('');
     const [subtasks, setSubtasks] = useState<Subtask[]>(initialTask.subtasks || []);
     const [newSubtaskText, setNewSubtaskText] = useState('');
@@ -65,6 +70,8 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
     const [editedPriority, setEditedPriority] = useState<number | undefined>(initialTask.priority);
     const [editedDeadline, setEditedDeadline] = useState<Date | null>(null);
     const [tagError, setTagError] = useState('');
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TaskDetails'>>();
 
@@ -83,6 +90,41 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
         setTask(initialTask);
         setSubtasks(initialTask.subtasks || []);
     }, [initialTask]);
+
+    useEffect(() => {
+        const loadAvatar = async () => {
+            try {
+                console.log('Tentando buscar perfil do usuário...');
+                const credentials = await keychain.getGenericPassword();
+                if (!credentials || !credentials.password) {
+                    throw new Error('Token não encontrado.');
+                }
+
+                const token = credentials.password;
+
+                const response = await fetch(`${API_BASE_URL}/profile`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    console.log('Dados do perfil:', userData);
+                    setAvatar(userData.picture); // Atualiza o avatar com o valor retornado pela API
+                } else {
+                    console.error('Erro ao buscar perfil do usuário:', response.status);
+                    Alert.alert('Erro', 'Não foi possível carregar o avatar do usuário.');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar avatar:', error);
+                Alert.alert('Erro', 'Ocorreu um erro ao carregar o avatar.');
+            }
+        };
+
+        loadAvatar();
+    }, []);
 
     useEffect(() => {
         console.log('Valor de editedDeadline:', editedDeadline);
@@ -230,6 +272,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
 
     return (
         <KeyboardAvoidingView
+            style={styles.keyboardAvoidingView}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
         >
@@ -240,7 +283,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={styles.scrollViewContent}
             >
-                <DefaultHeader leftComponent={<SmallBackButton />} />
+                <DefaultHeader leftComponent={<SmallBackButton />} avatarSource={avatar} />
                 <View style={styles.taskDetailsContainer}>
                     {!isEditing ? (
                         <>
@@ -266,7 +309,7 @@ const TaskDetailsScreen: React.FC<TaskDetailsProps> = ({ onTaskUpdated }) => {
                                                 <CategoryTag key={index} item={tag} />
                                             ))
                                         ) : (
-                                            <Text>No tags available</Text> // Caso não haja categorias
+                                            <Text style={styles.notag}>No tags available</Text>
                                         )}
                                     </View>
                                 </View>

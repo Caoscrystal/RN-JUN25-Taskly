@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, Image, View } from 'react-native';
-import styles from './style';
+import getStyles from './style';
+import { useTheme } from '../../Theme/ThemeContext';
 
 type ProfileHeaderProps = {
   title: string;
@@ -8,6 +9,8 @@ type ProfileHeaderProps = {
 };
 
 export default function ProfileHeader({ title, onBackPress }: ProfileHeaderProps) {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <View style={styles.container}>
       <TouchableOpacity
